@@ -1,0 +1,25 @@
+import mongoose from 'mongoose';
+import fs from 'fs';
+import type { TErrorSources, TGenericErrorResponse } from '../types/error.types.js';
+
+const handleCastError = (err: mongoose.Error.CastError, file: any): TGenericErrorResponse => {
+  const errorSources: TErrorSources = [
+    {
+      path: err.path,
+      message: err.message,
+    },
+  ];
+
+  const statusCode = 400;
+  if (file) {
+    fs.unlinkSync(file);
+  }
+
+  return {
+    statusCode,
+    message: 'Invalid Id, Please enter a valid Id',
+    errorSources,
+  };
+};
+
+export default handleCastError;
