@@ -1,12 +1,14 @@
 import status from 'http-status';
 import AppError from '../../errors/AppError';
 import { Teacher } from '../Teacher/teacher.model';
-import { ILogin, IRegister } from './auth.interface';
+import { IAdminLogin, ITeacherLogin, ITeacherRegistration } from './auth.interface';
 import config from '../../config';
 import { createToken } from '../../utils/auth';
 import { SignOptions } from 'jsonwebtoken';
+import { Admin } from '../Admin/admin.model';
+import { IAdmin } from '../Admin/admin.interface';
 
-const loginTeacherIntoDB = async (payload: ILogin) => {
+const loginTeacherIntoDB = async (payload: ITeacherLogin) => {
   const user = await Teacher.isTeacherExistsByEmail(payload.email);
   if (!user) {
     throw new AppError(status.NOT_FOUND, 'user not found!');
@@ -41,7 +43,7 @@ const loginTeacherIntoDB = async (payload: ILogin) => {
   };
 };
 
-const registerUserIntoDB = async (payload: IRegister) => {
+const teacherRegistrationIntoDB = async (payload: ITeacherRegistration) => {
   let user;
   user = await Teacher.isTeacherExistsByEmail(payload.email);
   if (user) {
@@ -74,7 +76,37 @@ const registerUserIntoDB = async (payload: IRegister) => {
   };
 };
 
+const loginAdminIntoDB = async (payload: IAdminLogin) => {
+  const admin = await Admin.findByEmailAndValidate(
+    payload.email,
+    payload.password,
+    payload.ip_address,
+  );
+
+  const jwtPayload = { email: admin!.email };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as SignOptions['expiresIn'],
+  );
+  const refreshToken = createToken(
+    jwtPayload,
+    config.jwt_refresh_secret as string,
+    config.jwt_refresh_expires_in as SignOptions['expiresIn'],
+  );
+
+  await Admin.updateOne({ email: admin!.email }, { last_login: new Date() });
+
+  return {
+    user: admin,
+    accessToken,
+    refreshToken,
+  };
+};
+
 export const AuthServices = {
   loginTeacherIntoDB,
-  registerUserIntoDB,
+  teacherRegistrationIntoDB,
+  loginAdminIntoDB,
 };

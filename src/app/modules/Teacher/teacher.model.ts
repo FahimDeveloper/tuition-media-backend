@@ -58,6 +58,7 @@ const teacherSchema = new Schema<ITeacher, TeacherModel>(
   },
   {
     timestamps: true,
+    versionKey: false,
   },
 );
 
