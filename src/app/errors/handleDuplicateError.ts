@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import fs from 'fs';
-import type { TErrorSources, TGenericErrorResponse } from '../types/error.types.js';
+import type { TErrorSources, TGenericErrorResponse } from '../types/error.types';
 
-const handleDuplicateError = (err: any, file: any): TGenericErrorResponse => {
+const handleDuplicateError = (err: any): TGenericErrorResponse => {
   const match = err.message.match(/"([^"]*)"/);
 
   const extractedMessage = match && match[1];
@@ -15,9 +13,9 @@ const handleDuplicateError = (err: any, file: any): TGenericErrorResponse => {
   ];
 
   const statusCode = 400;
-  if (file) {
-    fs.unlinkSync(file);
-  }
+  // if (file) {
+  //   fs.unlinkSync(file);
+  // }
   return {
     statusCode,
     message: `${extractedMessage} is already exists`,

@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import fs from 'fs';
-import type { TErrorSources, TGenericErrorResponse } from '../types/error.types.js';
+import type { TErrorSources, TGenericErrorResponse } from '../types/error.types';
 
-const handleCastError = (err: mongoose.Error.CastError, file: any): TGenericErrorResponse => {
+const handleCastError = (err: mongoose.Error.CastError): TGenericErrorResponse => {
   const errorSources: TErrorSources = [
     {
       path: err.path,
@@ -11,9 +10,9 @@ const handleCastError = (err: mongoose.Error.CastError, file: any): TGenericErro
   ];
 
   const statusCode = 400;
-  if (file) {
-    fs.unlinkSync(file);
-  }
+  // if (file) {
+  //   fs.unlinkSync(file);
+  // }
 
   return {
     statusCode,

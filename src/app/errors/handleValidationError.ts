@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import type { TErrorSources, TGenericErrorResponse } from '../types/error.types.js';
+import type { TErrorSources, TGenericErrorResponse } from '../types/error.types';
 
 const handleValidationError = (err: mongoose.Error.ValidationError): TGenericErrorResponse => {
   const message: string[] = [];
