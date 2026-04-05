@@ -10,6 +10,10 @@ const router = express.Router();
 
 const mainRoutes = [
   {
+    path: '/auth',
+    route: AuthenticationRoutes,
+  },
+  {
     path: '/teachers',
     route: TeacherRoutes,
   },
