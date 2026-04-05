@@ -4,6 +4,7 @@ import { AuthenticationRoutes } from '../modules/Authentication/auth.router';
 import { AdminRoutes } from '../modules/Admin/admin.router';
 import { TuitionJobRouter } from '../modules/TuitionJob/tuitionJob.router';
 import { AppliedApplicationRoutes } from '../modules/AppliedApplication/applied.router';
+import { ImageUploadRoutes } from '../modules/ImageUpload/imageUpload.route';
 
 const router = express.Router();
 
@@ -27,6 +28,10 @@ const mainRoutes = [
   {
     path: '/apply-applications',
     route: AppliedApplicationRoutes,
+  },
+  {
+    path: '/media-upload',
+    route: ImageUploadRoutes,
   },
 ];
 
