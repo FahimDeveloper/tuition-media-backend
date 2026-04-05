@@ -3,6 +3,7 @@ import { TeacherRoutes } from '../modules/Teacher/teacher.router';
 import { AuthenticationRoutes } from '../modules/Authentication/auth.router';
 import { AdminRoutes } from '../modules/Admin/admin.router';
 import { TuitionJobRouter } from '../modules/TuitionJob/tuitionJob.router';
+import { AppliedApplicationRoutes } from '../modules/AppliedApplication/applied.router';
 
 const router = express.Router();
 
@@ -22,6 +23,10 @@ const mainRoutes = [
   {
     path: '/tuition-jobs',
     route: TuitionJobRouter,
+  },
+  {
+    path: '/apply-applications',
+    route: AppliedApplicationRoutes,
   },
 ];
 
