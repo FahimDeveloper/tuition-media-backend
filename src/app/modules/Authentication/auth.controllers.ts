@@ -72,4 +72,6 @@ export const AuthControllers = {
   loginTeacher,
   registerTeacher,
   loginAdmin,
+  refreshTeacherToken,
+  refreshAdminToken,
 };
