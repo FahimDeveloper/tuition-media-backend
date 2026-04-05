@@ -13,8 +13,6 @@ export interface ILead {
     note?: string;
     doneBy: mongoose.Types.ObjectId;
   }[];
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface LeadModel extends Model<ILead> {

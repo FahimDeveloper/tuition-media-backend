@@ -8,5 +8,6 @@ router.get('/new', LeadControllers.getNewLeads);
 router.get('/assigned', LeadControllers.getAssignedLeads);
 router.get('/assigned/own/:id', LeadControllers.getAssignedOwnLeads);
 router.patch('/assigned/:id', LeadControllers.makeLeadAsAssigned);
+router.patch('/update/:id', LeadControllers.updateLead);
 
 export const LeadRoutes = router;

@@ -27,11 +27,13 @@ const getAssignedOwnLeads = catchAsync(async (req, res) => {
 });
 
 const makeLeadAsAssigned = catchAsync(async (req, res) => {
-  const result = await LeadServices.makeLeadAsAssignedIntoDB(
-    req.params.id as string,
-    req.body.assignedTo,
-  );
+  const result = await LeadServices.makeLeadAsAssignedIntoDB(req.params.id as string, req.body);
   sendResponse(res, status.OK, 'Lead marked as assigned successfully!', result);
+});
+
+const updateLead = catchAsync(async (req, res) => {
+  const result = await LeadServices.updateLeadIntoDB(req.params.id as string, req.body);
+  sendResponse(res, status.OK, 'Lead updated successfully!', result);
 });
 
 export const LeadControllers = {
@@ -40,4 +42,5 @@ export const LeadControllers = {
   getAssignedLeads,
   getAssignedOwnLeads,
   makeLeadAsAssigned,
+  updateLead,
 };

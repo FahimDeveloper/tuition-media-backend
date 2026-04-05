@@ -40,12 +40,20 @@ const getAssignedOwnLeadsFromBD = async (userId: string, query: Record<string, u
   return { result, count };
 };
 
-const makeLeadAsAssignedIntoDB = async (id: string, assignedTo: string) => {
+const makeLeadAsAssignedIntoDB = async (
+  id: string,
+  payload: { assignedTo: string; reffredBy: string },
+) => {
   const result = await Lead.findByIdAndUpdate(
     id,
-    { status: 'assigned', assignedTo },
+    { status: 'assigned', assignedTo: payload.assignedTo, reffredBy: payload.reffredBy },
     { new: true },
   );
+  return result;
+};
+
+const updateLeadIntoDB = async (id: string, payload: Partial<ILead>) => {
+  const result = await Lead.findByIdAndUpdate(id, payload, { new: true });
   return result;
 };
 
@@ -55,4 +63,5 @@ export const LeadServices = {
   getAssignedLeadsFromBD,
   getAssignedOwnLeadsFromBD,
   makeLeadAsAssignedIntoDB,
+  updateLeadIntoDB,
 };
