@@ -3,10 +3,9 @@ import AppError from '../../errors/AppError';
 import { Teacher } from '../Teacher/teacher.model';
 import { IAdminLogin, ITeacherLogin, ITeacherRegistration } from './auth.interface';
 import config from '../../config';
-import { createToken } from '../../utils/auth';
+import { createToken, verifyToken } from '../../utils/auth';
 import { SignOptions } from 'jsonwebtoken';
 import { Admin } from '../Admin/admin.model';
-import { IAdmin } from '../Admin/admin.interface';
 
 const loginTeacherIntoDB = async (payload: ITeacherLogin) => {
   const user = await Teacher.isTeacherExistsByEmail(payload.email);
@@ -76,6 +75,30 @@ const teacherRegistrationIntoDB = async (payload: ITeacherRegistration) => {
   };
 };
 
+const refreshTeacherTokenFromDB = async (token: string) => {
+  try {
+    const { _doc } = verifyToken(token, config.jwt_refresh_secret as string);
+    const user = await Teacher.findOne({ email: _doc.email });
+    if (!user) throw new AppError(status.NOT_FOUND, 'Teacher not found!');
+    const jwtPayload = {
+      ...user,
+    };
+    const accessToken = createToken(
+      jwtPayload,
+      config.jwt_access_secret as string,
+      config.jwt_access_expires_in as SignOptions['expiresIn'],
+    );
+    const refreshToken = createToken(
+      jwtPayload,
+      config.jwt_refresh_secret as string,
+      config.jwt_refresh_expires_in as SignOptions['expiresIn'],
+    );
+    return { user, accessToken, refreshToken };
+  } catch (error: any) {
+    throw new AppError(status.UNAUTHORIZED, error?.message);
+  }
+};
+
 const loginAdminIntoDB = async (payload: IAdminLogin) => {
   const admin = await Admin.findByEmailAndValidate(
     payload.email,
@@ -105,8 +128,34 @@ const loginAdminIntoDB = async (payload: IAdminLogin) => {
   };
 };
 
+const refreshAdminTokenFromDB = async (token: string) => {
+  try {
+    const { _doc } = verifyToken(token, config.jwt_refresh_secret as string);
+    const user = await Admin.findOne({ email: _doc.email });
+    if (!user) throw new AppError(status.NOT_FOUND, 'Admin not found!');
+    const jwtPayload = {
+      ...user,
+    };
+    const accessToken = createToken(
+      jwtPayload,
+      config.jwt_access_secret as string,
+      config.jwt_access_expires_in as SignOptions['expiresIn'],
+    );
+    const refreshToken = createToken(
+      jwtPayload,
+      config.jwt_refresh_secret as string,
+      config.jwt_refresh_expires_in as SignOptions['expiresIn'],
+    );
+    return { user, accessToken, refreshToken };
+  } catch (error: any) {
+    throw new AppError(status.UNAUTHORIZED, error?.message);
+  }
+};
+
 export const AuthServices = {
   loginTeacherIntoDB,
   teacherRegistrationIntoDB,
   loginAdminIntoDB,
+  refreshTeacherTokenFromDB,
+  refreshAdminTokenFromDB,
 };

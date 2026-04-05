@@ -56,6 +56,18 @@ const loginAdmin = catchAsync(async (req, res) => {
   });
 });
 
+const refreshTeacherToken = catchAsync(async (req, res) => {
+  const { refresh_token } = req.body;
+  const result = await AuthServices.refreshTeacherTokenFromDB(refresh_token);
+  sendResponse(res, status.OK, 'Token refreshed successfully!', result);
+});
+
+const refreshAdminToken = catchAsync(async (req, res) => {
+  const { refresh_token } = req.body;
+  const result = await AuthServices.refreshAdminTokenFromDB(refresh_token);
+  sendResponse(res, status.OK, 'Token refreshed successfully!', result);
+});
+
 export const AuthControllers = {
   loginTeacher,
   registerTeacher,
