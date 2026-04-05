@@ -5,6 +5,7 @@ import { AdminRoutes } from '../modules/Admin/admin.router';
 import { TuitionJobRouter } from '../modules/TuitionJob/tuitionJob.router';
 import { AppliedApplicationRoutes } from '../modules/AppliedApplication/applied.router';
 import { ImageUploadRoutes } from '../modules/ImageUpload/imageUpload.route';
+import { LeadRoutes } from '../modules/Lead/lead.router';
 
 const router = express.Router();
 
@@ -36,6 +37,10 @@ const mainRoutes = [
   {
     path: '/media-upload',
     route: ImageUploadRoutes,
+  },
+  {
+    path: '/leads',
+    route: LeadRoutes,
   },
 ];
 

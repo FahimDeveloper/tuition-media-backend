@@ -7,7 +7,7 @@ import notFound from './app/middleware/notFound';
 
 export const app: Application = express();
 
-const allowedOrigins = ['http://localhost:7500'];
+const allowedOrigins = ['http://localhost:4500'];
 
 app.use(
   cors({
