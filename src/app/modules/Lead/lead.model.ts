@@ -14,6 +14,7 @@ const leadSchema = new Schema<ILead, LeadModel>(
   {
     name: { type: String, required: true, trim: true },
     contact: { type: String, required: true, trim: true },
+    details: { type: String, required: true, trim: true },
     assignedTo: { type: Schema.Types.ObjectId, ref: 'Admin', required: true },
     referredBy: { type: Schema.Types.ObjectId, ref: 'Admin' },
     status: {

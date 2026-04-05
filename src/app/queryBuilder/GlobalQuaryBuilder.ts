@@ -28,24 +28,37 @@ class GlobalQueryBuilder<T> {
     return this;
   }
 
-  rangeFilter() {
-    const { start_date, end_date } = this?.query;
-    if (start_date && end_date) {
-      this.modelQuery = this.modelQuery.find({
-        $gte: start_date,
-        $lte: end_date,
-      });
-    }
-    return this;
-  }
+  // rangeFilter() {
+  //   const { start_date, end_date } = this?.query;
+  //   if (start_date && end_date) {
+  //     this.modelQuery = this.modelQuery.find({
+  //       $gte: start_date,
+  //       $lte: end_date,
+  //     });
+  //   }
+  //   return this;
+  // }
 
-  dateFilter() {
-    const { date } = this.query;
-    if (date) {
+  salaryFilter() {
+    const { min_price, max_price } = this?.query;
+
+    if (min_price && max_price) {
       this.modelQuery = this.modelQuery.find({
-        bookings: { $elemMatch: { date: date } },
+        'salary.amount': {
+          $gte: Number(min_price),
+          $lte: Number(max_price),
+        },
+      });
+    } else if (min_price) {
+      this.modelQuery = this.modelQuery.find({
+        'salary.amount': { $gte: Number(min_price) },
+      });
+    } else if (max_price) {
+      this.modelQuery = this.modelQuery.find({
+        'salary.amount': { $lte: Number(max_price) },
       });
     }
+
     return this;
   }
 

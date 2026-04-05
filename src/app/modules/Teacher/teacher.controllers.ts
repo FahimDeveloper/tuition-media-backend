@@ -4,8 +4,8 @@ import sendResponse from '../../utils/sendResponse';
 import { TeacherServices } from './teacher.services';
 
 const getAllTeachers = catchAsync(async (req, res) => {
-  const result = await TeacherServices.getAllTeachersFromDB(req.query);
-  sendResponse(res, status.OK, 'Teachers retrieved successfully!', result);
+  const { result, count } = await TeacherServices.getAllTeachersFromDB(req.query);
+  sendResponse(res, status.OK, 'Teachers retrieved successfully!', result, count);
 });
 
 const getSingleTeacher = catchAsync(async (req, res) => {

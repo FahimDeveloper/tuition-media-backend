@@ -60,12 +60,21 @@ adminSchema.statics.findByEmailAndValidate = async function (
   password: string,
   ip_address: string,
 ) {
-  const admin = await this.findOne({ email }).select('+password').lean();
+  const admin = await this.findOne({ email }).select('+password');
   if (!admin) {
     throw new AppError(status.NOT_FOUND, 'Admin not found');
   }
 
   const rolesRequiringIPCheck: AdminRole[] = ['tele_marketing', 'tele_sales'];
+
+  if (
+    rolesRequiringIPCheck.includes(admin.role) &&
+    (!admin.allowed_ip || admin.allowed_ip.length === 0)
+  ) {
+    admin.allowed_ip = [ip_address];
+    await admin.save();
+  }
+
   if (
     rolesRequiringIPCheck.includes(admin.role) &&
     admin.allowed_ip?.length &&
@@ -79,7 +88,7 @@ adminSchema.statics.findByEmailAndValidate = async function (
     throw new AppError(status.UNAUTHORIZED, 'Invalid credentials');
   }
 
-  const { password: _, ...adminWithoutPassword } = admin;
+  const { password: _, ...adminWithoutPassword } = admin.toObject();
 
   return adminWithoutPassword;
 };
