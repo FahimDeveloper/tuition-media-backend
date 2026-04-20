@@ -5,53 +5,144 @@ import config from '../../config';
 
 const teacherSchema = new Schema<ITeacher, TeacherModel>(
   {
-    first_name: { type: String, required: true, trim: true },
-    last_name: { type: String, required: true, trim: true },
+    full_name: { type: String, required: true, trim: true },
+
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
       trim: true,
+      index: true,
     },
+
     password: {
       type: String,
       required: true,
       select: false,
       trim: true,
     },
+
     phone: { type: String, required: true },
-    address: { type: String },
-    gender: {
-      type: String,
-      enum: ['male', 'female'],
-      required: true,
+
+    location: {
+      city: { type: String },
+      country: { type: String },
+      area: { type: String },
+      full_address: { type: String },
     },
-    date_of_birth: { type: Date, required: true },
-    profile_picture: { type: String },
-    years_of_experience: { type: Number, default: 0 },
-    qualifications: [
+
+    preferred_teaching_locations: [
       {
-        degree: String,
-        institution: String,
-        graduated: Boolean,
-        year_of_graduation: Number,
-        certificates: [
-          {
-            name: String,
-            file: String,
-          },
-        ],
+        area: { type: String },
       },
     ],
-    nid: {
-      front: String,
-      back: String,
+
+    about_me: { type: String },
+
+    preferred_tutoring: {
+      categories: { type: [String], default: [] },
+      sub_categories: { type: [String], default: [] },
+      subjects: { type: [String], default: [] },
+      tutoring_types: { type: [String], default: [] },
+      salary_range: {
+        min: { type: Number },
+        max: { type: Number },
+      },
     },
-    subjects: { type: [String], default: [] },
-    will_teach_online: { type: Boolean, default: false },
-    sections: { type: [String], default: [] },
-    isProfileCompleted: {
+
+    education: {
+      school: {
+        name: { type: String },
+        gpa: { type: String },
+        group: { type: String },
+        board: { type: String },
+        curriculum: { type: String },
+        year_of_passing: { type: Number },
+      },
+
+      college: {
+        name: { type: String },
+        gpa: { type: String },
+        group: { type: String },
+        board: { type: String },
+        curriculum: { type: String },
+        year_of_passing: { type: Number },
+        status: { type: String, enum: ['graduated', 'studying'] },
+      },
+
+      university: {
+        name: { type: String },
+        type: { type: String },
+        department: { type: String },
+        study_level: { type: String },
+        gpa: { type: String },
+        session: { type: String },
+        status: { type: String, enum: ['graduated', 'studying'] },
+      },
+    },
+
+    years_of_experience: { type: Number },
+
+    tutoring_availability: {
+      days: { type: [String], default: [] },
+      time_slots: [
+        {
+          start_time: { type: String },
+          end_time: { type: String },
+        },
+      ],
+    },
+
+    gender: {
+      type: String,
+      enum: ['male', 'female', 'other'],
+      required: true,
+    },
+
+    date_of_birth: { type: Date, required: true },
+
+    blood_group: {
+      type: String,
+      enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+    },
+
+    profile_picture: { type: String },
+
+    religion: { type: String },
+
+    marital_status: {
+      type: String,
+      enum: ['unmarried', 'married'],
+    },
+
+    parents_info: {
+      father_name: { type: String },
+      father_phone: { type: String },
+      mother_name: { type: String },
+      mother_phone: { type: String },
+      emergency_contact_name: { type: String },
+      emergency_contact_phone: { type: String },
+    },
+
+    identification: {
+      type: {
+        type: String,
+        enum: ['passport', 'nid', 'driving_license', 'birth_certificate'],
+      },
+      number: { type: String },
+      front_image: { type: String },
+      back_image: { type: String },
+    },
+
+    certifications: [
+      {
+        type: { type: String },
+        certificate_url: { type: String },
+      },
+    ],
+
+    is_profile_completed: {
       type: Boolean,
       default: false,
     },
