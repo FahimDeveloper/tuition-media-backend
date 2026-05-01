@@ -25,18 +25,11 @@ const teacherSchema = new Schema<ITeacher, TeacherModel>(
 
     phone: { type: String, required: true },
 
-    location: {
+    preferred_teaching_locations: {
       city: { type: String },
       country: { type: String },
-      area: { type: String },
-      full_address: { type: String },
+      area: { type: [String] },
     },
-
-    preferred_teaching_locations: [
-      {
-        area: { type: String },
-      },
-    ],
 
     about_me: { type: String },
 

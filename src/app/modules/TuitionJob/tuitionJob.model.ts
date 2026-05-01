@@ -9,18 +9,18 @@ const TuitionJobSchema: Schema<ITuitionJob> = new Schema(
     title: { type: String, required: true },
 
     student_gender: { type: String, enum: ['male', 'female', 'other'], required: true },
-    class_level: { type: String, required: true },
+    course_level: { type: String, required: true },
     subjects: { type: [String], required: true },
 
     number_of_students: { type: Number, required: true },
     tutoring_type: { type: String, enum: ['home', 'online', 'batch'], required: true },
-    medium: { type: String, enum: ['bangla', 'english', 'both'], required: true },
-
+    category: { type: String, enum: ['bangla', 'english', 'both'], required: true },
+    contact: { type: String, required: true },
     location: {
       address: { type: String, required: true },
+      country: { type: String, required: true },
       area: { type: String, required: true },
       city: { type: String, required: true },
-      postal_code: { type: String },
       latitude: { type: Number },
       longitude: { type: Number },
     },

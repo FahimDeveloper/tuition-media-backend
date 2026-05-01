@@ -3,7 +3,7 @@ import { TuitionJobControllers } from './tuitionJob.controllers';
 
 const router = express.Router();
 
-router.get('/user', TuitionJobControllers.getAllTuitionJobsForUser);
+router.get('/', TuitionJobControllers.getAllTuitionJobsForUser);
 router.get('/admin', TuitionJobControllers.getAllTuitionJobsForAdmin);
 router.get('/:id', TuitionJobControllers.getTuitionJobById);
 router.post('/create', TuitionJobControllers.createTuitionJob);

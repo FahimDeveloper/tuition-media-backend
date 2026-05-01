@@ -6,22 +6,20 @@ export interface ITeacher {
   password: string;
   phone: string;
 
-  location?: {
+  preset_address?: string;
+  permanent_address?: string;
+
+  preferred_teaching_locations?: {
     city: string;
     country: string;
-    area: string;
-    full_address: string;
+    area: [string];
   };
-
-  preferred_teaching_locations?: Array<{
-    area: string;
-  }>;
 
   about_me?: string;
 
   preferred_tutoring?: {
     categories: string[];
-    sub_categories: string[];
+    courses: string[];
     subjects: string[];
     tutoring_types: string[];
     salary_range: {

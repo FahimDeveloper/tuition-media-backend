@@ -106,7 +106,7 @@ const loginAdminIntoDB = async (payload: IAdminLogin) => {
     payload.ip_address,
   );
 
-  const jwtPayload = { email: admin!.email };
+  const jwtPayload = { email: admin!.email, role: admin!.role };
 
   const accessToken = createToken(
     jwtPayload,
@@ -131,11 +131,9 @@ const loginAdminIntoDB = async (payload: IAdminLogin) => {
 const refreshAdminTokenFromDB = async (token: string) => {
   try {
     const { _doc } = verifyToken(token, config.jwt_refresh_secret as string);
-    const user = await Admin.findOne({ email: _doc.email });
-    if (!user) throw new AppError(status.NOT_FOUND, 'Admin not found!');
-    const jwtPayload = {
-      ...user,
-    };
+    const admin = await Admin.findOne({ email: _doc.email });
+    if (!admin) throw new AppError(status.NOT_FOUND, 'Admin not found!');
+    const jwtPayload = { email: admin!.email, role: admin!.role };
     const accessToken = createToken(
       jwtPayload,
       config.jwt_access_secret as string,
@@ -146,7 +144,7 @@ const refreshAdminTokenFromDB = async (token: string) => {
       config.jwt_refresh_secret as string,
       config.jwt_refresh_expires_in as SignOptions['expiresIn'],
     );
-    return { user, accessToken, refreshToken };
+    return { user: admin, accessToken, refreshToken };
   } catch (error: any) {
     throw new AppError(status.UNAUTHORIZED, error?.message);
   }

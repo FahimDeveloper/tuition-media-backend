@@ -8,10 +8,11 @@ const createTuitionJobIntoDB = async (payload: ITuitionJob) => {
 };
 
 const getAllTuitionJobsForUserFromDB = async (query: Record<string, unknown>) => {
-  const jobQuery = new GlobalQueryBuilder(TuitionJob.find(), query);
+  const jobQuery = new GlobalQueryBuilder(TuitionJob.find().select('-contact'), query);
   jobQuery.search(['title', 'subjects']);
   jobQuery.filter();
   jobQuery.salaryFilter();
+  jobQuery.monthFilter();
   jobQuery.paginate();
   const result = await jobQuery.modelQuery;
   const count = await jobQuery.countTotal();

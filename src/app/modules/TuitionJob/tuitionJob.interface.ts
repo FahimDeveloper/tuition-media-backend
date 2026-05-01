@@ -7,18 +7,18 @@ export interface ITuitionJob {
   title: string;
 
   student_gender: 'male' | 'female' | 'other';
-  class_level: string;
+  course_level: string;
   subjects: string[];
 
   number_of_students: number;
   tutoring_type: 'home' | 'online' | 'batch';
-  medium: 'bangla' | 'english' | 'both';
-
+  category: 'bangla' | 'english' | 'both';
+  contact: string;
   location: {
     address: string;
+    country: string;
     area: string;
     city: string;
-    postal_code?: string;
     latitude?: number;
     longitude?: number;
   };
