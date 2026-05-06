@@ -24,18 +24,22 @@ const teacherSchema = new Schema<ITeacher, TeacherModel>(
     },
 
     phone: { type: String, required: true },
+    additional_phone: { type: String },
+
+    preset_address: { type: String },
+    permanent_address: { type: String },
 
     preferred_teaching_locations: {
       city: { type: String },
       country: { type: String },
-      area: { type: [String] },
+      area: { type: [String], default: [] },
     },
 
     about_me: { type: String },
 
     preferred_tutoring: {
       categories: { type: [String], default: [] },
-      sub_categories: { type: [String], default: [] },
+      courses: { type: [String], default: [] },
       subjects: { type: [String], default: [] },
       tutoring_types: { type: [String], default: [] },
       salary_range: {
@@ -64,7 +68,28 @@ const teacherSchema = new Schema<ITeacher, TeacherModel>(
         status: { type: String, enum: ['graduated', 'studying'] },
       },
 
-      university: {
+      diploma: {
+        is_diploma: { type: Boolean },
+        name: { type: String },
+        type: { type: String },
+        department: { type: String },
+        study_level: { type: String },
+        cgpa: { type: String },
+        session: { type: String },
+        status: { type: String, enum: ['graduated', 'studying'] },
+      },
+
+      graduation: {
+        name: { type: String },
+        type: { type: String },
+        department: { type: String },
+        study_level: { type: String },
+        gpa: { type: String },
+        session: { type: String },
+        status: { type: String, enum: ['graduated', 'studying'] },
+      },
+
+      post_graduation: {
         name: { type: String },
         type: { type: String },
         department: { type: String },
@@ -79,21 +104,14 @@ const teacherSchema = new Schema<ITeacher, TeacherModel>(
 
     tutoring_availability: {
       days: { type: [String], default: [] },
-      time_slots: [
-        {
-          start_time: { type: String },
-          end_time: { type: String },
-        },
-      ],
     },
 
     gender: {
       type: String,
       enum: ['male', 'female', 'other'],
-      required: true,
     },
 
-    date_of_birth: { type: Date, required: true },
+    date_of_birth: { type: Date },
 
     blood_group: {
       type: String,
@@ -136,12 +154,31 @@ const teacherSchema = new Schema<ITeacher, TeacherModel>(
     ],
 
     is_profile_completed: {
+      // TODO: NEED TO PLAN.
+      type: Boolean,
+      default: false,
+    },
+
+    is_verified: {
+      type: Boolean,
+      default: false,
+    },
+
+    is_active: {
+      type: Boolean,
+      default: true,
+    },
+
+    is_deleted: {
       type: Boolean,
       default: false,
     },
   },
   {
-    timestamps: true,
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
     versionKey: false,
   },
 );

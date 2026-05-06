@@ -5,6 +5,7 @@ export interface ITeacher {
   email: string;
   password: string;
   phone: string;
+  additional_phone: string;
 
   preset_address?: string;
   permanent_address?: string;
@@ -48,7 +49,29 @@ export interface ITeacher {
       status: 'graduated' | 'studying';
     };
 
-    university?: {
+    diploma?: {
+      is_diploma: boolean;
+      name: string;
+      type: string;
+      department: string;
+      study_level: string;
+      cgpa?: string;
+      session?: string;
+      status: 'graduated' | 'studying';
+    };
+
+    graduation?: {
+      name: string;
+      type: string;
+      department: string;
+      study_level: string;
+      gpa?: string;
+      session?: string;
+      status: 'graduated' | 'studying';
+    };
+
+    post_graduation?: {
+      // new
       name: string;
       type: string;
       department: string;
@@ -63,10 +86,7 @@ export interface ITeacher {
 
   tutoring_availability?: {
     days: string[];
-    time_slots: Array<{
-      start_time: string;
-      end_time: string;
-    }>;
+    // time slot not needed
   };
 
   gender: 'male' | 'female' | 'other';
@@ -103,6 +123,9 @@ export interface ITeacher {
   }>;
 
   is_profile_completed: boolean;
+  is_verified: boolean; // new
+  is_active: boolean; // new
+  is_deleted: boolean;
 
   created_at?: Date;
   updated_at?: Date;
