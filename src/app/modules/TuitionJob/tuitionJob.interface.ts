@@ -1,19 +1,23 @@
 import { Types } from 'mongoose';
 
 export interface ITuitionJob {
+  // private data
   lead_from: Types.ObjectId;
   posted_by: Types.ObjectId;
+  contact: string;
 
+  // public data
   title: string;
-
   student_gender: 'male' | 'female' | 'other';
-  course_level: string;
+
+  category: 'bangla' | 'english' | 'both';
+  course: string;
   subjects: string[];
 
   number_of_students: number;
+
   tutoring_type: 'home' | 'online' | 'batch';
-  category: 'bangla' | 'english' | 'both';
-  contact: string;
+
   location: {
     address: string;
     country: string;
@@ -28,7 +32,9 @@ export interface ITuitionJob {
   preferred_time: string;
 
   salary: {
-    amount: number;
+    min: number;
+    max: number;
+    expected: number;
     type: 'monthly' | 'per_class';
     negotiable: boolean;
   };
