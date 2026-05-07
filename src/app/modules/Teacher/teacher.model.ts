@@ -77,16 +77,6 @@ const teacherSchema = new Schema<ITeacher, TeacherModel>(
 
     years_of_experience: { type: Number },
 
-    tutoring_availability: {
-      days: { type: [String], default: [] },
-      time_slots: [
-        {
-          start_time: { type: String },
-          end_time: { type: String },
-        },
-      ],
-    },
-
     gender: {
       type: String,
       enum: ['male', 'female', 'other'],
