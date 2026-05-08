@@ -23,6 +23,14 @@ const teacherSchema = new Schema<ITeacher, TeacherModel>(
       trim: true,
     },
 
+    role: {
+      type: String,
+      required: true,
+      trim: true,
+      enum: ['teacher'],
+      default: 'teacher',
+    },
+
     phone: { type: String, required: true },
     additional_phone: { type: String },
 

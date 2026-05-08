@@ -2,7 +2,6 @@ import mongoose, { Schema, Model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 import { AdminModel, IAdmin } from './admin.interface';
-import { AdminRole } from '../../utils/role';
 import AppError from '../../errors/AppError';
 import status from 'http-status';
 
@@ -65,7 +64,7 @@ adminSchema.statics.findByEmailAndValidate = async function (
     throw new AppError(status.NOT_FOUND, 'Admin not found');
   }
 
-  const rolesRequiringIPCheck: AdminRole[] = ['tele_marketing', 'tele_sales'];
+  const rolesRequiringIPCheck = ['tele_marketing', 'tele_sales'];
 
   if (
     rolesRequiringIPCheck.includes(admin.role) &&
@@ -91,6 +90,10 @@ adminSchema.statics.findByEmailAndValidate = async function (
   const { password: _, ...adminWithoutPassword } = admin.toObject();
 
   return adminWithoutPassword;
+};
+
+adminSchema.statics.isAdminExistsByEmail = async function (email: string) {
+  return await this.findOne({ email }).select('+password').lean();
 };
 
 export const Admin = mongoose.model<IAdmin, AdminModel>('Admin', adminSchema);

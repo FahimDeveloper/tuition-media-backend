@@ -5,6 +5,7 @@ export interface ITeacher {
   email: string;
   password: string;
   phone: string;
+  role: 'teacher';
   additional_phone: string;
 
   preset_address?: string;

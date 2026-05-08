@@ -1,12 +1,11 @@
 import { Model } from 'mongoose';
-import { AdminRole } from '../../utils/role';
 
 export interface IAdmin {
   full_name: string;
   email: string;
   password: string;
   phone: string;
-  role: AdminRole;
+  role: 'tele_marketing' | 'tele_sales' | 'admin' | 'super_admin';
   profile_picture?: string;
   isActive: boolean;
   isDeleted: boolean;
@@ -15,6 +14,7 @@ export interface IAdmin {
 }
 
 export interface AdminModel extends Model<IAdmin> {
+  isAdminExistsByEmail(email: string): Promise<IAdmin>;
   findByEmailAndValidate(
     email: string,
     ip_address: string,

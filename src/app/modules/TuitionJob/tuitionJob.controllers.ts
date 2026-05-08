@@ -8,8 +8,8 @@ const createTuitionJob = catchAsync(async (req, res) => {
   sendResponse(res, status.CREATED, 'Tuition job created successfully', result);
 });
 
-const getAllTuitionJobsForUser = catchAsync(async (req, res) => {
-  const { result, count } = await TuitionJobServices.getAllTuitionJobsForUserFromDB(req.query);
+const getAllTuitionJobsForTeacher = catchAsync(async (req, res) => {
+  const { result, count } = await TuitionJobServices.getAllTuitionJobsForTeacherFromDB(req.query);
   sendResponse(res, status.OK, 'Tuition jobs retrieved successfully', result, count);
 });
 
@@ -33,7 +33,7 @@ const updateTuitionJobById = catchAsync(async (req, res) => {
 
 export const TuitionJobControllers = {
   createTuitionJob,
-  getAllTuitionJobsForUser,
+  getAllTuitionJobsForTeacher,
   getAllTuitionJobsForAdmin,
   getTuitionJobById,
   updateTuitionJobById,

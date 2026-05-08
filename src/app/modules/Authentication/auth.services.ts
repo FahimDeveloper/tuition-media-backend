@@ -20,6 +20,7 @@ const loginTeacherIntoDB = async (payload: ITeacherLogin) => {
 
   const jwtPayload = {
     email: user.email,
+    role: user.role,
   };
 
   const accessToken = createToken(
@@ -54,6 +55,7 @@ const teacherRegistrationIntoDB = async (payload: ITeacherRegistration) => {
 
   const jwtPayload = {
     email: payload.email,
+    role: 'teacher',
   };
 
   const accessToken = createToken(
@@ -81,7 +83,8 @@ const refreshTeacherTokenFromDB = async (token: string) => {
     const user = await Teacher.findOne({ email: _doc.email });
     if (!user) throw new AppError(status.NOT_FOUND, 'Teacher not found!');
     const jwtPayload = {
-      ...user,
+      email: user.email,
+      role: user.role,
     };
     const accessToken = createToken(
       jwtPayload,

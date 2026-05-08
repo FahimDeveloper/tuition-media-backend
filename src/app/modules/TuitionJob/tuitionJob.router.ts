@@ -1,15 +1,29 @@
 import express from 'express';
 import { TuitionJobControllers } from './tuitionJob.controllers';
+import { ROLE } from '../../types/role';
+import authMiddleware from '../../middleware/authMiddleware';
 
 const router = express.Router();
 
 // Public api
-router.get('/', TuitionJobControllers.getAllTuitionJobsForUser);
+router.get('/', TuitionJobControllers.getAllTuitionJobsForTeacher);
 router.get('/:id', TuitionJobControllers.getTuitionJobById);
 
 // private api.
-router.get('/admin', TuitionJobControllers.getAllTuitionJobsForAdmin);
-router.post('/create', TuitionJobControllers.createTuitionJob);
-router.patch('/update/:id', TuitionJobControllers.updateTuitionJobById);
+router.get(
+  '/admin',
+  authMiddleware(ROLE.admin, ROLE.superAdmin, ROLE.teleSales),
+  TuitionJobControllers.getAllTuitionJobsForAdmin,
+);
+router.post(
+  '/create',
+  authMiddleware(ROLE.admin, ROLE.superAdmin, ROLE.teleSales),
+  TuitionJobControllers.createTuitionJob,
+);
+router.patch(
+  '/update/:id',
+  authMiddleware(ROLE.admin, ROLE.superAdmin, ROLE.teleSales),
+  TuitionJobControllers.updateTuitionJobById,
+);
 
 export const TuitionJobRouter = router;

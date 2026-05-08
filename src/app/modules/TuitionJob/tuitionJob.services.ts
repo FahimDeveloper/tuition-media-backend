@@ -7,14 +7,14 @@ const createTuitionJobIntoDB = async (payload: ITuitionJob) => {
   return result;
 };
 
-const getAllTuitionJobsForUserFromDB = async (query: Record<string, unknown>) => {
-  const jobQuery = new GlobalQueryBuilder(TuitionJob.find().select('-contact'), query);
+const getAllTuitionJobsForTeacherFromDB = async (query: Record<string, unknown>) => {
+  const jobQuery = new GlobalQueryBuilder(TuitionJob.find(), query);
   jobQuery.search(['title', 'subjects']);
   jobQuery.filter();
   jobQuery.salaryFilter();
   jobQuery.monthFilter();
   jobQuery.paginate();
-  const result = await jobQuery.modelQuery;
+  const result = await jobQuery.modelQuery.select('-contact -lead_from -posted_by');
   const count = await jobQuery.countTotal();
   return { result, count };
 };
@@ -30,7 +30,7 @@ const getAllTuitionJobsForAdminFromDB = async (query: Record<string, unknown>) =
 };
 
 const getTuitionJobByIdFromDB = async (id: string) => {
-  const result = await TuitionJob.findById(id);
+  const result = await TuitionJob.findById(id).select('-contact -lead_from -posted_by');
   return result;
 };
 
@@ -41,7 +41,7 @@ const updateTuitionJobByIntoDB = async (id: string, payload: Partial<ITuitionJob
 
 export const TuitionJobServices = {
   createTuitionJobIntoDB,
-  getAllTuitionJobsForUserFromDB,
+  getAllTuitionJobsForTeacherFromDB,
   getAllTuitionJobsForAdminFromDB,
   getTuitionJobByIdFromDB,
   updateTuitionJobByIntoDB,
