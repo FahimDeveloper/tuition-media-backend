@@ -17,6 +17,9 @@ router.get(
   authMiddleware(ROLE.teacher),
   TeacherControllers.getSinglePrivateTeacher,
 );
+
+// ! update password should work properly.
+// ! after updating password, user should be able to login with new password.
 router.patch('/profile/update/:id', authMiddleware(ROLE.teacher), TeacherControllers.updateTeacher);
 
 export const TeacherRoutes = router;

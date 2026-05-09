@@ -11,35 +11,36 @@ const router = express.Router();
 
 const mainRoutes = [
   {
-    path: '/auth',
+    path: '/auth', // checked
     route: AuthenticationRoutes,
   },
   {
-    path: '/teachers',
+    path: '/teachers', // checked
     route: TeacherRoutes,
   },
   {
+    // ? what is the difference between auth and authentications
     path: '/authentications',
     route: AuthenticationRoutes,
   },
   {
-    path: '/admins',
+    path: '/admins', // checked
     route: AdminRoutes,
   },
   {
-    path: '/tuition-jobs',
+    path: '/tuition-jobs', // checked
     route: TuitionJobRouter,
   },
   {
-    path: '/apply-applications',
+    path: '/apply-applications', // checked
     route: AppliedApplicationRoutes,
   },
   {
-    path: '/media-upload',
+    path: '/media-upload', // * will check later.
     route: ImageUploadRoutes,
   },
   {
-    path: '/leads',
+    path: '/leads', // checked
     route: LeadRoutes,
   },
 ];

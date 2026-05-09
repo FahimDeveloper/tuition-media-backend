@@ -6,16 +6,22 @@ import { ROLE } from '../../types/role';
 const router = express.Router();
 
 router.post('/create', LeadControllers.createLead);
+// * - need a api to get all leads for admin.
+
 router.get(
   '/new',
   authMiddleware(ROLE.admin, ROLE.superAdmin, ROLE.teleSales),
   LeadControllers.getNewLeads,
 );
+
 router.get(
   '/assigned',
   authMiddleware(ROLE.admin, ROLE.superAdmin, ROLE.teleSales),
   LeadControllers.getAssignedLeads,
 );
+
+// ? what is the difference between own and assigned
+// * need to understand it will check later. although it's not needed now for prototype.
 router.get(
   '/assigned/own/:id',
   authMiddleware(ROLE.admin, ROLE.superAdmin, ROLE.teleSales),

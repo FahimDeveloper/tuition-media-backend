@@ -25,14 +25,17 @@ const authMiddleware = (...requiredRoles: Partial<TRole[]>) =>
       const user = await Teacher.isTeacherExistsByEmail(email);
       if (!user) {
         throw new AppError(httpStatus.UNAUTHORIZED, 'The request not authorized!');
-      } else {
-        if (!user?.is_verified) {
-          throw new AppError(
-            httpStatus.BAD_REQUEST,
-            'Please verify your account to access this resource!',
-          );
-        }
       }
+
+      // * We should not check is teacher verified here.
+      // else {
+      //   if (!user?.is_verified) {
+      //     throw new AppError(
+      //       httpStatus.BAD_REQUEST,
+      //       'Please verify your account to access this resource!',
+      //     );
+      //   }
+      // }
     } else if (
       role === ROLE.admin ||
       role === ROLE.superAdmin ||
