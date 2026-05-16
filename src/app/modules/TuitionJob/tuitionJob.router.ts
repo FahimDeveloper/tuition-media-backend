@@ -17,7 +17,7 @@ router.get(
   TuitionJobControllers.getAllTuitionJobsForAdmin,
 );
 
-// * - They are working fine. will check again after admin get all tuition jobs fixed
+// * - They are working fine. need check again after admin get all tuition jobs fixed
 router.post(
   '/create',
   authMiddleware(ROLE.admin, ROLE.superAdmin, ROLE.teleSales),

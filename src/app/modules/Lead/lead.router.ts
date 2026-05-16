@@ -6,7 +6,7 @@ import { ROLE } from '../../types/role';
 const router = express.Router();
 
 router.post('/create', LeadControllers.createLead);
-// * - need a api to get all leads for admin.
+// * - need a api to get all leads for admin dashboard.
 
 router.get(
   '/new',
