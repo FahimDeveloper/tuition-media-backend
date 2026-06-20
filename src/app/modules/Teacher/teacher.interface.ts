@@ -1,6 +1,7 @@
 import { Model } from 'mongoose';
 
 export interface ITeacher {
+  serial_number?: string;
   full_name: string;
   email: string;
   password: string;

@@ -30,7 +30,11 @@ const getSinglePrivateTeacherFromDB = async (id: string) => {
 };
 
 const updateTeacherIntoDB = async (id: string, payload: Partial<ITeacher>) => {
-  const result = await Teacher.findByIdAndUpdate(id, payload, { new: true });
+  const { password, ...safePayload } = payload;
+  const result = await Teacher.findByIdAndUpdate(id, safePayload, {
+    new: true,
+  });
+
   return result;
 };
 

@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { ITuitionJob } from './tuitionJob.interface';
+import { Counter } from '../Counter/counter.model';
 
 const TuitionJobSchema: Schema<ITuitionJob> = new Schema(
   {
@@ -7,7 +8,7 @@ const TuitionJobSchema: Schema<ITuitionJob> = new Schema(
     lead_from: { type: Schema.Types.ObjectId, required: true, ref: 'Lead' },
     posted_by: { type: Schema.Types.ObjectId, required: true, ref: 'Admin' },
     contact: { type: String, required: true },
-
+    serial_number: { type: String },
     // public data.
     title: { type: String, required: true },
     student_gender: { type: String, enum: ['male', 'female', 'other'], required: true },
@@ -38,16 +39,19 @@ const TuitionJobSchema: Schema<ITuitionJob> = new Schema(
       max: { type: Number, required: true },
       expected: { type: Number, required: true },
       type: { type: String, enum: ['monthly', 'per_class'], required: true }, // no need
-      negotiable: { type: Boolean, default: true }, // no need
     },
 
-    tutor_gender: { type: String, enum: ['male', 'female'] },
-    tutor_qualification: { type: String }, // public or private or national university.
-    tutor_experience_years: { type: Number }, // no need
+    tutor_gender: { type: String, enum: ['male', 'female'], required: true },
+    tutor_qualification: { type: String, required: true }, // public or private or national university.
+    tutor_experience_years: { type: Number, required: true }, // no need
 
     special_requirements: { type: String },
 
-    status: { type: String, enum: ['open', 'assigned', 'closed'], default: 'open' },
+    status: {
+      type: String,
+      enum: ['open', 'assigned', 'demo', 'follow-up', 'confirmed', 'cancelled'],
+      default: 'open',
+    },
   },
   {
     timestamps: true,
@@ -55,9 +59,30 @@ const TuitionJobSchema: Schema<ITuitionJob> = new Schema(
   },
 );
 
+TuitionJobSchema.pre('save', async function () {
+  if (!this.isNew) return;
+
+  const counter = await Counter.findOneAndUpdate(
+    {},
+    {
+      $inc: {
+        'job_counter.value': 1,
+      },
+    },
+    {
+      new: true,
+      upsert: true,
+      setDefaultsOnInsert: true,
+    },
+  );
+
+  const value = counter?.job_counter?.value ?? 1;
+
+  this.serial_number = `#${value}`;
+});
+
 // TuitionJobSchema.index({ 'location.city': 1 });
 // TuitionJobSchema.index({ subjects: 1 });
 // TuitionJobSchema.index({ 'salary.amount': 1 });
 
 export const TuitionJob = mongoose.model<ITuitionJob>('TuitionJob', TuitionJobSchema);
-

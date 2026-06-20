@@ -8,7 +8,6 @@ const loginTeacher = catchAsync(async (req, res) => {
   const { accessToken, refreshToken, user } = result;
 
   res.cookie('refreshToken', refreshToken, {
-    // domain: '.prostrikers.com',
     secure: true,
     httpOnly: true,
     sameSite: 'lax',
@@ -25,7 +24,6 @@ const registerTeacher = catchAsync(async (req, res) => {
   const result = await AuthServices.teacherRegistrationIntoDB(req.body);
   const { accessToken, refreshToken, user } = result;
   res.cookie('refreshToken', refreshToken, {
-    // domain: '.prostrikers.com',
     secure: true,
     httpOnly: true,
     sameSite: 'lax',
@@ -88,10 +86,16 @@ const refreshAdminToken = catchAsync(async (req, res) => {
   });
 });
 
+const changeTeacherPassword = catchAsync(async (req, res) => {
+  await AuthServices.changeTeacherPasswordIntoDB(req.params.id as string, req.body);
+  sendResponse(res, status.OK, 'Password changed successfully!');
+});
+
 export const AuthControllers = {
   loginTeacher,
   registerTeacher,
   loginAdmin,
   refreshTeacherToken,
   refreshAdminToken,
+  changeTeacherPassword,
 };

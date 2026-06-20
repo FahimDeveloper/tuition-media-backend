@@ -1,12 +1,13 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { CallbackError, SaveOptions, Schema } from 'mongoose';
 import { ITeacher, TeacherModel } from './teacher.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
+import { Counter } from '../Counter/counter.model';
 
 const teacherSchema = new Schema<ITeacher, TeacherModel>(
   {
     full_name: { type: String, required: true, trim: true },
-
+    serial_number: { type: String },
     email: {
       type: String,
       required: true,
@@ -190,6 +191,28 @@ const teacherSchema = new Schema<ITeacher, TeacherModel>(
     versionKey: false,
   },
 );
+
+teacherSchema.pre('save', async function () {
+  if (!this.isNew) return;
+
+  const counter = await Counter.findOneAndUpdate(
+    {},
+    {
+      $inc: {
+        'teacher_counter.value': 1,
+      },
+    },
+    {
+      new: true,
+      upsert: true,
+      setDefaultsOnInsert: true,
+    },
+  );
+
+  const value = counter?.teacher_counter?.value ?? 1;
+
+  this.serial_number = `#${value}`;
+});
 
 teacherSchema.pre('save', async function () {
   if (!this.isModified('password')) return;

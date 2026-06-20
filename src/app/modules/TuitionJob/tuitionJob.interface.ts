@@ -7,6 +7,7 @@ export interface ITuitionJob {
   contact: string;
 
   // public data
+  serial_number?: string;
   title: string;
   student_gender: 'male' | 'female' | 'other';
 
@@ -21,8 +22,8 @@ export interface ITuitionJob {
   location: {
     address: string;
     country: string;
-    area: string;
     city: string;
+    area: string;
     latitude?: number;
     longitude?: number;
   };
@@ -45,5 +46,5 @@ export interface ITuitionJob {
 
   special_requirements?: string;
 
-  status: 'open' | 'assigned' | 'closed';
+  status: 'open' | 'assigned' | '' | 'closed';
 }

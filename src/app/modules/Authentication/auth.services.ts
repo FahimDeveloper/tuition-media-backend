@@ -6,6 +6,7 @@ import config from '../../config';
 import { createToken, verifyToken } from '../../utils/auth';
 import { SignOptions } from 'jsonwebtoken';
 import { Admin } from '../Admin/admin.model';
+import bcrypt from 'bcrypt';
 
 const loginTeacherIntoDB = async (payload: ITeacherLogin) => {
   const user = await Teacher.isTeacherExistsByEmail(payload.email);
@@ -131,6 +132,31 @@ const loginAdminIntoDB = async (payload: IAdminLogin) => {
   };
 };
 
+const changeTeacherPasswordIntoDB = async (id: string, payload: any) => {
+  const user = await Teacher.findById(id).select('+password');
+  if (!user) {
+    throw new AppError(status.NOT_FOUND, 'Teacher not found');
+  }
+
+  const passwordMatch = await Teacher.isPasswordMatched(payload.current_password, user?.password);
+  if (!passwordMatch) {
+    throw new AppError(status.FORBIDDEN, 'Current password is incorrect');
+  }
+
+  const newHashedPassword = await bcrypt.hash(
+    payload.new_password,
+    Number(config.bcrypt_salt_rounds),
+  );
+
+  const result = await Teacher.findByIdAndUpdate(id, {
+    password: newHashedPassword,
+  });
+  if (!result) {
+    throw new AppError(status.INTERNAL_SERVER_ERROR, 'Password change failed');
+  }
+  return;
+};
+
 const refreshAdminTokenFromDB = async (token: string) => {
   try {
     const { _doc } = verifyToken(token, config.jwt_refresh_secret as string);
@@ -159,4 +185,5 @@ export const AuthServices = {
   loginAdminIntoDB,
   refreshTeacherTokenFromDB,
   refreshAdminTokenFromDB,
+  changeTeacherPasswordIntoDB,
 };

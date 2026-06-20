@@ -23,7 +23,11 @@ const getSingleAdminFromDB = async (id: string) => {
 };
 
 const updateAdminIntoDB = async (id: string, payload: Partial<IAdmin>) => {
-  const result = await Admin.findByIdAndUpdate(id, payload, { new: true });
+  const { password, ...safePayload } = payload;
+  const result = await Admin.findByIdAndUpdate(id, safePayload, {
+    new: true,
+  });
+
   return result;
 };
 

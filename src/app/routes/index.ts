@@ -6,6 +6,7 @@ import { TuitionJobRouter } from '../modules/TuitionJob/tuitionJob.router';
 import { AppliedApplicationRoutes } from '../modules/AppliedApplication/applied.router';
 import { ImageUploadRoutes } from '../modules/ImageUpload/imageUpload.route';
 import { LeadRoutes } from '../modules/Lead/lead.router';
+import { TeacherLeadRouter } from '../modules/DirectLeadForTeacher/teacher.lead.router';
 
 const router = express.Router();
 
@@ -17,11 +18,6 @@ const mainRoutes = [
   {
     path: '/teachers', // checked
     route: TeacherRoutes,
-  },
-  {
-    // ? what is the difference between auth and authentications
-    path: '/authentications',
-    route: AuthenticationRoutes,
   },
   {
     path: '/admins', // checked
@@ -42,6 +38,10 @@ const mainRoutes = [
   {
     path: '/leads', // checked
     route: LeadRoutes,
+  },
+  {
+    path: '/direct-leads', // checked
+    route: TeacherLeadRouter,
   },
 ];
 

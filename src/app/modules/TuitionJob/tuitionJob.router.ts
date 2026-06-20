@@ -7,8 +7,6 @@ const router = express.Router();
 
 // Public api
 router.get('/', TuitionJobControllers.getAllTuitionJobsForTeacher);
-router.get('/:id', TuitionJobControllers.getTuitionJobById);
-
 // private api.
 // ! - it shows invalid id. should fix it.
 router.get(
@@ -16,6 +14,14 @@ router.get(
   authMiddleware(ROLE.admin, ROLE.superAdmin, ROLE.teleSales),
   TuitionJobControllers.getAllTuitionJobsForAdmin,
 );
+
+router.get(
+  '/admin/running',
+  authMiddleware(ROLE.admin, ROLE.superAdmin, ROLE.teleSales),
+  TuitionJobControllers.getAllRunningJobsForAdmin,
+);
+
+router.get('/:id', TuitionJobControllers.getTuitionJobById);
 
 // * - They are working fine. need check again after admin get all tuition jobs fixed
 router.post(
